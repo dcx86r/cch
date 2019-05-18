@@ -1,0 +1,15 @@
+#!/bin/sh
+
+PREFIX="/usr/local/bin"
+
+INSTALL() {
+	cp cch.pl $PREFIX/cch
+}
+
+UNINSTALL() {
+	rm $PREFIX/cch
+}
+
+[ -n "$1" ] || exit
+[ "$1" = "install" ] && INSTALL
+[ "$1" = "uninstall" ] && UNINSTALL
