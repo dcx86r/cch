@@ -11,10 +11,10 @@ This program prints ANSI true color escape sequences for valid HTML (hex) codes.
 
 #### Installation
 
-`[sudo] sh installer install` to install in $PATH
+`[sudo] sh installer install` to install in $PATH  
 `[sudo] sh installer uninstall` to uninstall
 
 #### Examples
 
-`cch ~/.Xresources | less -r`
+`cch ~/.Xresources | less -r`  
 `echo #111 #222 #333 #444 | cch -b` 
