@@ -4,10 +4,12 @@ PREFIX="/usr/local/bin"
 
 INSTALL() {
 	cp cch.pl $PREFIX/cch
+	printf '%s\n' "cch installed"
 }
 
 UNINSTALL() {
 	rm $PREFIX/cch
+	printf '%s\n' "cch removed"
 }
 
 [ -n "$1" ] || exit

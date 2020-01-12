@@ -1,6 +1,6 @@
 ## cch - Color Code Highlighter
 
-This program prints ANSI true color escape sequences for valid HTML (hex) codes.
+`cch` is a command line utility that highlights valid hex codes in their corresponding color.
 
 ![Screenshot](https://raw.githubusercontent.com/dcx86r/cch/master/sample.jpg)
 

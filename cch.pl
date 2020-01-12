@@ -1,35 +1,27 @@
 #!/usr/bin/perl
 
 # Contrast formula via Ilmari Karonen
-# key_ready from perlfaq5
 
 use v5.10;
 use Getopt::Std;
 
 $Getopt::Std::STANDARD_HELP_VERSION = 1;
 getopts('b', \my %opts) || die 
-	"Bad flag(s)\n";
+	"Try 'cch --help' for help\n";
 my $bg_only = 1 if $opts{b};
 
 sub HELP_MESSAGE{
 	say	"Usage: cch [OPTION] [FILE]\n" .
 		"\nOption:\n" .
-		"\t-b\tomit foreground text\n\n" .
+		"\t-b\tomits foreground text\n\n" .
 		"Examples:\n" .
-		"\tcch ~/.Xresources\n" .
+		"\tcch ~/.Xresources | less -r\n" .
 		"\techo #333 #444 #555 | cch\n";
 }
 
 sub VERSION_MESSAGE {
-	say	"Color Code Highlighter v0.1";
+	say	"Color Code Highlighter v0.2";
 } 
-
-sub key_ready {
-	my $fh = shift;
-	my ($rin, $nfd);
-	vec($rin, fileno(${$fh}), 1) = 1;
-	return $nfd = select($rin,undef,undef,0);
-}
 
 sub prep {
 	my $code = shift;
@@ -65,13 +57,17 @@ sub colorize {
 sub main {
 	my $fh;
 	my $file = shift @ARGV;
-	$file   ? open($fh, "<", $file) || die 
-			"Can't read from $file: $!\n"
+	$file ? open($fh, "<", $file) 
+		|| die "Can't read from $file: $!\n"
 		: open($fh, "-");
 
-	HELP_MESSAGE && exit unless $file || key_ready(\$fh);
+	if (-t $fh) {
+		say "Use 'q' to exit";
+		print "Enter code(s): ";
+	}
 
 	while (my $row = <$fh>) {
+		last if -t $fh && $row eq "q\n";
 		chomp $row;
 		$row =~ s/((\#[[:xdigit:]]{6})
 			 |(\#[[:xdigit:]]{3}))
@@ -79,6 +75,7 @@ sub main {
 			 /colorize($1)
 			 /xeg;
 		say $row;
+		print "Enter code(s): " if -t $fh;
 	}
 }
 
